@@ -1,0 +1,37 @@
+# Arquivos de Build e Temporários do Vivado/Xilinx
+.Xil/
+*.cache/
+*.hw/
+*.ip_user_files/
+*.runs/
+*.sim/
+*.log
+*.jou
+*.str
+*.backup.jou
+*.backup.log
+
+# Diretórios de Build
+db/
+incremental_db/
+output_files/
+simulation/
+
+# Arquivos de Projeto (comentar se quiser versionar)
+*.xpr
+dfx_runtime.txt
+
+# Arquivos Temporários
+*.bak
+*.swp
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Zip e Compactados
+*.zip
