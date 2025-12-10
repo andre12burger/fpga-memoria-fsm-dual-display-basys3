@@ -19,13 +19,13 @@ Sistema avançado de memória implementado em VHDL para FPGA Xilinx Basys3, cont
 ### Visão Geral
 
 Este projeto implementa um **sistema autônomo** que executa automaticamente uma sequência de operações:
-1. **Estado de Segurança** (3 segundos)
-2. **Aviso de Escrita** com indicação visual
-3. **Escrita em 4 posições** da memória (valores pré-definidos)
-4. **Aviso de Leitura** com indicação visual  
-5. **Leitura das 4 posições** com exibição nos displays
-6. **Reset da Memória**
-7. **Estado Final**
+1. **Estado de Segurança** (3 segundos) - Displays piscam "8888 8888", LED RGB pisca em amarelo
+2. **Aviso de Escrita** (3 segundos) - Display pisca "E5CrItA"
+3. **Escrita em 4 posições** (3 segundos cada) - Valores pré-definidos, LED verde sempre aceso
+4. **Aviso de Leitura** (3 segundos) - Display pisca "LEItUrA"
+5. **Leitura das 4 posições** (3 segundos cada) - Exibe valores decimais, LED azul sempre aceso
+6. **Reset da Memória** (3 segundos) - Display pisca "000", LED vermelho piscando
+7. **Estado Final** - LEDs RGB alternando cores (vermelho → verde → azul)
 
 ### Módulos Principais
 
@@ -95,42 +95,43 @@ Este projeto implementa um **sistema autônomo** que executa automaticamente uma
 
 ```
      ┌─────────────┐
-     │  SEGURANCA  │ (3s - Display: "ALCA")
-     │  LED: Verde │
+     │  SEGURANCA  │ (3s - Display pisca: "8888 8888")
+     │LED: Amarelo │ (piscando)
+     │   Piscando  │
      └──────┬──────┘
             ↓
      ┌──────────────┐
-     │AVISO_ESCRITA │ (2s - Display: "Escr")
-     │ LED: Amarelo │
+     │AVISO_ESCRITA │ (3s - Display pisca: "E5CrItA")
+     │LED: Piscando │
      └──────┬───────┘
             ↓
      ┌────────────────┐
-     │ ESCRITA_POS_0  │ (0.5s cada)
+     │ ESCRITA_POS_0  │ (3s cada)
      │ ESCRITA_POS_1  │ Valores: 3, 25, 255, 42
-     │ ESCRITA_POS_2  │ LED: Vermelho
+     │ ESCRITA_POS_2  │ LED: Verde (sempre aceso)
      │ ESCRITA_POS_3  │
      └────────┬───────┘
               ↓
      ┌──────────────┐
-     │AVISO_LEITURA │ (2s - Display: "Leir")
-     │ LED: Ciano   │
+     │AVISO_LEITURA │ (3s - Display pisca: "LEItUrA")
+     │LED: Piscando │
      └──────┬───────┘
             ↓
      ┌────────────────┐
-     │ LEITURA_POS_0  │ (2s cada)
+     │ LEITURA_POS_0  │ (3s cada)
      │ LEITURA_POS_1  │ Exibe valor decimal
-     │ LEITURA_POS_2  │ LED: Azul
+     │ LEITURA_POS_2  │ LED: Azul (sempre aceso)
      │ LEITURA_POS_3  │
      └────────┬───────┘
               ↓
      ┌──────────────┐
-     │RESET_MEMORIA │ (1s - Display: "----")
-     │LED: Magenta  │
+     │RESET_MEMORIA │ (3s - Display pisca: "000")
+     │LED: Vermelho │ (piscando)
      └──────┬───────┘
             ↓
      ┌──────────────┐
-     │    FINAL     │ (Display: "0000")
-     │ LED: Branco  │
+     │    FINAL     │ (Display apagado)
+     │LEDs Alternando│ (Vermelho → Verde → Azul)
      └──────────────┘
 ```
 
@@ -198,24 +199,26 @@ Este projeto implementa um **sistema autônomo** que executa automaticamente uma
 
 O sistema opera **automaticamente** após a programação:
 
-1. **Aguarde 3 segundos** - Estado de segurança (display mostra "ALCA", LED verde)
-2. **Observe a escrita** - Sistema escreve valores nas 4 posições (LED vermelho)
-3. **Leitura automática** - Cada posição é exibida por 2 segundos (LED azul)
-4. **Reset da memória** - Display mostra "----" (LED magenta)
-5. **Estado final** - Display mostra "0000" (LED branco)
+1. **Estado de Segurança (3s)** - Todos os 8 displays piscam "8", LED amarelo piscando
+2. **Aviso de Escrita (3s)** - Display pisca "E5CrItA" (Escrita)
+3. **Escrita nas 4 posições (3s cada)** - Valores: 3, 25, 255, 42 - LED verde sempre aceso
+4. **Aviso de Leitura (3s)** - Display pisca "LEItUrA" (Leitura)
+5. **Leitura das 4 posições (3s cada)** - Exibe valores decimais, LED azul sempre aceso
+6. **Reset da memória (3s)** - Display pisca "000", LED vermelho piscando
+7. **Estado final** - Display apagado, LEDs RGB alternando (Vermelho → Verde → Azul)
 
 **Para reiniciar:** Pressione o botão de reset (U18) ou recarregue o bitstream
 
 ### Indicadores Visuais
 
 **LED RGB - Código de Cores:**
-- 🟢 Verde: Estado de segurança
-- 🟡 Amarelo: Aviso de escrita
-- 🔴 Vermelho: Escrevendo na memória
-- 🔵 Ciano: Aviso de leitura
-- 🔵 Azul: Lendo da memória
-- 🟣 Magenta: Reset da memória
-- ⚪ Branco: Estado final
+- 🟡 Amarelo (piscando): Estado de segurança - display pisca "8888 8888"
+- 💡 LED piscando: Aviso de escrita - display pisca "E5CrItA"
+- 🟢 Verde (sempre aceso): Escrevendo na memória - 4 posições (3s cada)
+- 💡 LED piscando: Aviso de leitura - display pisca "LEItUrA"
+- 🔵 Azul (sempre aceso): Lendo da memória - exibe valores decimais (3s cada)
+- 🔴 Vermelho (piscando): Reset da memória - display pisca "000"
+- 🌈 Alternando (R→G→B): Estado final - display apagado, ciclo de 1s por cor
 
 ## 📁 Estrutura do Projeto
 
